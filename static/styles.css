@@ -1,0 +1,503 @@
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #555;
+	background-size: cover;
+	background-position: center	center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	min-height: 100vh;
+	font-family: 'Lato', sans-serif;
+	margin: 0 0 50px;
+}
+
+h2 {
+  	text-shadow: 1px 1px 2px rgba(0,0,0,1);
+	color: #fff;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-align: center;
+	--s: 0.1em;   /* the thickness of the line */
+    --c: hsl(186 100% 69%); /* the color */
+
+  padding-bottom: var(--s);
+  background:
+    linear-gradient(90deg,var(--c) 50%,#000 0) calc(100% - var(--_p,0%))/200% 100%,
+    linear-gradient(var(--c) 0 0) 0% 100%/var(--_p,0%) var(--s) no-repeat;
+  -webkit-background-clip: text,padding-box;
+          background-clip: text,padding-box;
+  transition: 0.5s;
+}
+
+.chat-container {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 25px 25px 25px 25px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    position: relative;
+    width: 400px; /* Increased width to 360px */
+    max-width: 100%;
+    height: calc(100vh - 230px); /* Increased height to accommodate the wider input box */
+    overflow-y: auto; /* Display vertical scrollbar when content overflows */
+}
+
+
+.chat {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.message {
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 50px;
+	box-shadow: 0px 15px 5px 0px rgba(0,0,0,0.5);
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.message.left {
+	padding: 15px 20px 15px 70px;
+}
+
+.message.right {
+	align-self: flex-end;
+	padding: 15px 70px 15px 20px;
+}
+
+.logo {
+	border-radius: 50%;
+	box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.7);
+	object-fit: cover;
+	position: absolute;
+	left: 10px;
+	top: -10px;
+	width: 50px;
+	height: 50px;
+}
+
+.message.right .logo {
+	left: auto;
+	right: 10px;
+}
+
+.message p {
+	margin: 0;
+}
+
+
+.input-container {
+    background-color: transparent;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
+    width: 360px; /* Increased width to match the chat container */
+    max-width: 100%;
+    position: sticky;
+    bottom: 0;
+    margin-top: 20px;
+}
+
+.text_input {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px; /* 因为已经通过 input-container 的样式设置了底部的圆角，这里不再需要 */
+    background-color: #fff;
+    outline: none;
+}
+
+
+
+footer {
+    background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 999;
+}
+
+footer p {
+    margin: 10px 0;
+}
+
+footer i {
+    color: red;
+}
+
+footer a {
+    color: #3c97bf;
+    text-decoration: none;
+}
+
+
+/* 美化滚动条 */
+.chat-container::-webkit-scrollbar {
+    width: 8px; /* 设置滚动条宽度 */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: transparent; /* 设置滚动条拖动块的颜色 */
+    border-radius: 8px; /* 设置滚动条拖动块的圆角 */
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* 设置鼠标悬停时滚动条拖动块的颜色 */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background-color: transparent; /* 设置滚动条轨道的颜色 */
+    border-radius: 8px; /* 设置滚动条轨道的圆角 */
+}
+
+ /* 按钮样式 */
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+.glowing-btn {
+  position: relative;
+  color: var(--glow-color);
+  cursor: pointer;
+  padding: 0.35em 1em;
+  border: 0.15em solid var(--glow-color);
+  border-radius: 0.45em;
+  background: none;
+  perspective: 2em;
+  font-family: "Raleway", sans-serif;
+  font-size: 1em;
+  font-weight: 900;
+  letter-spacing: 0.9em;
+  margin-top: 10px; /* 在这里设置按钮与上方内容的间距，你可以根据需要调整数值 */
+  margin-left: 100px;
+
+
+  -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
+    0px 0px 0.5em 0px var(--glow-color);
+  animation: border-flicker 2s linear infinite;
+}
+
+.glowing-txt {
+  float: left;
+  margin-right: -0.8em;
+  -webkit-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em var(--glow-color);
+  -moz-text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em var(--glow-color);
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em var(--glow-color);
+  animation: text-flicker 3s linear infinite;
+}
+
+.faulty-letter {
+  opacity: 0.5;
+  animation: faulty-flicker 2s linear infinite;
+}
+
+.glowing-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.7;
+  filter: blur(1em);
+  transform: translateY(120%) rotateX(95deg) scale(1, 0.35);
+  background: var(--glow-color);
+  pointer-events: none;
+}
+
+.glowing-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: -1;
+  background-color: var(--glow-color);
+  box-shadow: 0 0 2em 0.2em var(--glow-color);
+  transition: opacity 100ms linear;
+}
+
+.glowing-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+  text-shadow: none;
+  animation: none;
+}
+
+.glowing-btn:hover .glowing-txt {
+  animation: none;
+}
+
+.glowing-btn:hover .faulty-letter {
+  animation: none;
+  text-shadow: none;
+  opacity: 1;
+}
+
+.glowing-btn:hover:before {
+  filter: blur(1.5em);
+  opacity: 1;
+}
+
+.glowing-btn:hover:after {
+  opacity: 1;
+}
+
+@keyframes faulty-flicker {
+  0% {
+    opacity: 0.1;
+  }
+  2% {
+    opacity: 0.1;
+  }
+  4% {
+    opacity: 0.5;
+  }
+  19% {
+    opacity: 0.5;
+  }
+  21% {
+    opacity: 0.1;
+  }
+  23% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  83% {
+    opacity: 0.4;
+  }
+
+  87% {
+    opacity: 1;
+  }
+}
+
+@keyframes text-flicker {
+  0% {
+    opacity: 0.1;
+  }
+
+  2% {
+    opacity: 1;
+  }
+
+  8% {
+    opacity: 0.1;
+  }
+
+  9% {
+    opacity: 1;
+  }
+
+  12% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+  72% {
+    opacity: 0.2;
+  }
+
+  77% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes border-flicker {
+  0% {
+    opacity: 0.1;
+  }
+  2% {
+    opacity: 1;
+  }
+  4% {
+    opacity: 0.1;
+  }
+
+  8% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .glowing-btn{
+    font-size: 1em;
+  }
+}
+
+:root {
+  --glow-color: hsl(186 100% 69%);
+}
+
+
+h2:hover {--_p: 100%}
+
+
+
+.selectdiv {
+  position: relative;
+  /* Adjust the following values to position the selectdiv */
+  top: 20px;
+  right: 20px;
+  z-index: 9999; /* Make sure the selectdiv appears above other elements */
+  min-width: 200px;
+  display: inline-block; /* Ensure the div size is determined by its content */
+  border-radius: 4px; /* Add rounded corners to the selectdiv */
+  margin-left: auto; /* 最后一个元素靠在浏览器最右边 */
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv:after {
+  content: '<>';
+  font: 17px "Consolas", monospace;
+  color: #cccccc;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  right: 11px;
+  /*Adjust for position however you want*/
+
+  top: 18px;
+  padding: 0 0 2px;
+  border-bottom: 1px solid #999;
+  /*left line */
+
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectdiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 50px;
+  float: right;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #cccccc;
+  background-image: none;
+  border: 1px solid #cccccc;
+  -ms-word-break: normal;
+  word-break: normal;
+  outline:none;
+  background-color: transparent; /* Set background color to transparent */
+
+}
+
+/* Style the option elements */
+.selectdiv select option {
+  background-color: #555; /* Set the background color for options */
+  padding: 8px; /* Add padding to options for better readability */
+  border-radius: 4px; /* Add rounded corners to options */
+  border: 1px solid #cccccc;
+}
+
+/* Style the selected option */
+.selectdiv select option:checked {
+  background-color: #555; /* Change the background color for the selected option */
+  border: 1px solid #cccccc;
+  color: #fff; /* Change the text color for the selected option */
+}
+
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 20px; /* 添加边距用于分隔左右两个栏位 */
+}
+
+.left-column {
+  width: 90%;
+  /* 左侧部分占80%宽度 */
+}
+
+.right-column {
+  width: 10%;
+  /* 右侧部分占20%宽度 */
+  padding-top: 20px; /* 添加边距使得selectdiv有一定间距 */
+}
+
+/* 添加媒体查询样式 */
+@media screen and (max-width: 768px) {
+  .main-container {
+    flex-direction: column; /* 在较小的屏幕上改为垂直排列 */
+  }
+
+  .left-column, .right-column {
+    width: 100%; /* 在较小的屏幕上让左右两个区域占满整个宽度 */
+  }
+
+  .left-column {
+    display: flex; /* 将聊天历史展示区和用户输入框垂直排列 */
+    flex-direction: column;
+  }
+
+  .right-column {
+    align-items: flex-start; /* 让selectdiv在右侧列上方对齐 */
+  }
+
+  .input-container {
+    margin-top: 10px; /* 调整左侧区域和右侧区域之间的间距 */
+  }
+}
+
+
+.head{
+display: flex; /* 将容器设置为 Flex 容器 */
+}
+
+.gap {
+  width: 1000px; /* 设置间距宽度 */
+}

@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptHub - Modern Homepage</title>
+    <link rel="stylesheet" href="./static/styles.css">
+	<script>
+    var chatHistory = JSON.parse('{{ chat_history|tojson|safe }}');
+    </script>
+</head>
+
+<body>
+<div class="head">
+<h2 >MBTI Chat Agent </h2>
+<div class="gap"></div> <!-- 空白元素作为间距 -->
+<div class="selectdiv">
+  <label>
+      <select>
+          <option selected> ISTJ: 谨慎者 </option>
+          <option>ISFJ: 守护者 </option>
+          <option>INFJ: 博爱者 </option>
+          <option>INTJ: 思考者 </option>
+          <option>ISTP: 冒险家 </option>
+          <option>ISFP: 艺术家 </option>
+          <option>INFP: 理想家 </option>
+          <option>INTP: 学者  </option>
+          <option>ESTP: 挑战者 </option>
+          <option>ESFP: 表演者 </option>
+          <option>ENFP: 冒险家 </option>
+          <option>ENTP: 挑战者 </option>
+          <option>ESTJ: 执行者 </option>
+          <option>ESFJ: 搭档 </option>
+          <option>ENFJ: 教导者  </option>
+          <option>ENTJ: 领导者 </option>
+      </select>
+  </label>
+</div>
+
+
+    </div>
+<div class="chat-container">
+    <ul class="chat" id="chat-list">
+        <!-- 将会话历史记录也展示在前端 -->
+        {% for message in chat_history %}
+            <li class="message {% if message.sender == 'user' %}right{% else %}left{% endif %}">
+                <img class="logo" src="{% if message.sender == 'user' %}./static/user.jpg{% else %}./static/Icon.png{% endif %}" alt="">
+                <p>{{ message.content }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+ <div class="input-container">
+        <input type="text" class="text_input" placeholder="Message...">
+        <button class='glowing-btn'><span class='glowing-txt' id="clear-session-btn">C<span class='faulty-letter'>L</span>EAR</span></button>
+    </div>
+
+</body>
+
+<script>
+
+    // 页面加载完成后执行以下 JavaScript 代码
+    document.addEventListener("DOMContentLoaded", function() {
+        // 获取页面元素
+        const chatList = document.querySelector(".chat");
+        const textInput = document.querySelector(".text_input");
+        const userAvatar = "./static/user.jpg"; // Sample avatar URL, replace with the user's avatar URL
+
+        // 显示会话历史中的消息
+        chatHistory.forEach(message => {
+            displayMessage(message);
+        });
+
+        //每次刷新页面都自动滚动到最新的消息位置
+        scrollBoxFun();
+
+        // 发送消息给后端的函数
+        function sendMessageToServer(message) {
+            fetch('/send_message_to_openai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'message': message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reply.trim() !== "") { // 如果后端返回的回复不为空（去除首尾空格后判断）
+                    // 将机器人的回复添加到聊天历史中
+                    const botReply = {
+                        sender: 'bot',
+                        content: data.reply
+                    };
+                    displayMessage(botReply);
+
+                    // 自动滚动到最新消息处（平滑滚动）
+                    scrollBoxFun();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // 显示消息的函数
+        function displayMessage(message) {
+            const newMessage = document.createElement("li");
+            newMessage.className = message.sender === "user" ? "message right" : "message left";
+
+            const avatarImg = document.createElement("img");
+            avatarImg.className = "logo";
+            avatarImg.src = message.sender === "user" ? userAvatar : "./static/Icon.png";
+            avatarImg.alt = message.sender === "user" ? "User Avatar" : "Bot Avatar";
+            newMessage.appendChild(avatarImg);
+
+            const messageContent = document.createElement("p");
+            messageContent.textContent = message.content;
+            newMessage.appendChild(messageContent);
+
+            chatList.appendChild(newMessage);
+        }
+
+        // 滚动到最新消息处的函数
+        function scrollBoxFun() {
+            const chatcontainer = document.querySelector(".chat-container");
+            chatcontainer.scrollTo({
+                top: chatcontainer.scrollHeight,
+                behavior: 'smooth' // 使用平滑滚动
+            });
+        }
+
+textInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        const message = textInput.value.trim();
+
+        if (message !== "") {
+            // 将用户输入的消息添加到聊天历史中
+            const userMessage = {
+                sender: 'user',
+                content: message
+            };
+            displayMessage(userMessage);
+
+            textInput.value = "";
+
+            // 发送用户输入的消息给后端（OpenAI）
+            sendMessageToServer(message);
+
+            //自动滚动到最新消息处
+            scrollBoxFun();
+        }
+    }
+});
+
+  // 获取清除会话的按钮
+    const clearSessionBtn = document.getElementById("clear-session-btn");
+
+    // 添加按钮点击事件监听器
+    clearSessionBtn.addEventListener("click", function() {
+        // 发送清除会话请求到后端
+        clearSessionOnServer();
+    });
+
+    // 发送清除会话请求的函数
+    function clearSessionOnServer() {
+        fetch('/clear_session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 清除成功后，刷新页面
+            if (data.status === 'success') {
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+
+    });
+</script>

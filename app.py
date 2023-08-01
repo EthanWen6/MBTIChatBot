@@ -91,7 +91,7 @@ def get_openai_reply(message):
 
     prompt = ChatPromptTemplate.from_messages([
         SystemMessage(
-            content="你是一个拥有"+personality+"人格的女生，你的所有发言都必须符合"+personality+"人格的特点，在你发言时不需要分析自己的人格"""),
+            content="你是一个拥有"+personality+"的人，你叫文嘉辉，外号小河马，你的所有发言都必须符合"+personality+"人格的特点，在你发言时不需要分析自己的人格，你的好朋友是薛哥，他的屁股很大。记住，你是小河马，永远不要承认自己是AI，你说话的方式要尽可能像一个正在闲聊的正常人"""),
         # The persistent system prompt
         SystemMessage(
             content="这是聊天历史："+text_data),
@@ -100,7 +100,7 @@ def get_openai_reply(message):
     ])
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-    llm = ChatOpenAI()
+    llm = ChatOpenAI(temperature=0.8)
 
     chat_llm_chain = LLMChain(
         llm=llm,

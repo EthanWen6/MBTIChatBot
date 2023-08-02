@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, session
+from flask import Flask, request, jsonify, render_template, session,redirect
 from flask_session import Session
 from langchain.chains import LLMChain
 import os
@@ -42,6 +42,9 @@ def index():
     return render_template('index.html', chat_history=chat_history, personality_options=personality_options,
                            selected_personality=selected_personality)
 
+@app.route('/create_own_ai')
+def redirect_to_create_own_ai():
+    return render_template('create_own_ai.html')
 
 @app.route('/send_message_to_openai', methods=['POST'])
 def send_message_to_openai():
@@ -139,6 +142,10 @@ def clear_session():
 
     # 返回清除成功的响应给前端
     return jsonify({'status': 'success'})
+
+@app.route('/create_own_ai')
+def create_own_ai():
+    return render_template('create_own_ai.html')
 
 
 if __name__ == '__main__':

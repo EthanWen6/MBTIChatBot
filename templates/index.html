@@ -10,9 +10,12 @@
 </head>
 
 <body>
+<button class="back ">
+  CLICK HERE
+</button>
 <div class="head">
 <h2 >MBTI Chat Agent </h2>
-    </div>
+</div>
 <div class="chat-container">
     <ul class="chat" id="chat-list">
         <!-- 将会话历史记录也展示在前端 -->
@@ -48,6 +51,7 @@
 
     // 页面加载完成后执行以下 JavaScript 代码
     document.addEventListener("DOMContentLoaded", function() {
+
         // 获取页面元素
         const chatList = document.querySelector(".chat");
         const textInput = document.querySelector(".text_input");
@@ -217,6 +221,12 @@ selectElement.addEventListener('change',function(){
             console.error('Error:', error);
         });
     }
+
+
+
+
+
+
 
 
     });

@@ -8,7 +8,7 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Me
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"]="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"
+os.environ["OPENAI_API_KEY"]="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"
 
 app = Flask(__name__)
 
@@ -22,8 +22,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 
-@app.route('/')
-def index():
+@app.route('/chatpage')
+def chatpage():
     # Get the chat history from the session or initialize an empty list
     chat_history = session.get('chat_history', [])
 
@@ -39,12 +39,12 @@ def index():
         'ESTJ: 执行者', 'ESFJ: 搭档', 'ENFJ: 教导者', 'ENTJ: 领导者',
     ]
 
-    return render_template('index.html', chat_history=chat_history, personality_options=personality_options,
+    return render_template('chatpage.html', chat_history=chat_history, personality_options=personality_options,
                            selected_personality=selected_personality)
 
-@app.route('/create_own_ai')
-def redirect_to_create_own_ai():
-    return render_template('create_own_ai.html')
+@app.route('/chatpage')
+def redirect_to_chatpage():
+    return render_template('chatpage.html')
 
 @app.route('/send_message_to_openai', methods=['POST'])
 def send_message_to_openai():
@@ -143,9 +143,13 @@ def clear_session():
     # 返回清除成功的响应给前端
     return jsonify({'status': 'success'})
 
-@app.route('/create_own_ai')
-def create_own_ai():
-    return render_template('create_own_ai.html')
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/createai')
+def createai():
+    return render_template('createai.html')
 
 
 if __name__ == '__main__':

@@ -34,10 +34,9 @@ body {
   position: absolute;
   top: 20;
   left: 10;
-  padding: 15px 20px;
+  padding: 10px 15px;
   background-color: transparent;
-  color: #03e9f4;
-  font-weight: bold;
+  color: #ccc;
   border: none;
   border-radius: 5px;
   letter-spacing: 4px;
@@ -46,15 +45,6 @@ body {
   cursor: pointer;
 }
 
-.back:hover{
-    background: #03e9f4;
-    color: #050801;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 150px #03e9f4;
-     -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
-}
 
 
 h2 {

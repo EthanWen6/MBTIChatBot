@@ -1,0 +1,77 @@
+body {
+	background-color: #555;
+	background-size: cover;
+	background-position: center	center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	min-height: 100vh;
+	font-family: 'Lato', sans-serif;
+	margin: 0 0 50px;
+
+	animation: fadeInAnimation ease 1.5s;
+}
+
+@keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+}
+
+
+/* 设置输入框容器的样式 */
+.input-container {
+    position: relative; /* 让容器相对定位，以便控制伪元素的位置 */
+    display: flex; /* 使用弹性布局使内容水平排列 */
+    align-items: center; /* 在交叉轴上居中对齐 */
+}
+
+/* 设置输入框的透明度 */
+.input-container input {
+    background-color: transparent; /* 设置输入框背景为透明 */
+    border: none; /* 移除边框 */
+    border-bottom: 1px solid #ccc; /* 添加底部边框用于指示输入框区域 */
+    padding: 5px; /* 添加一些内边距，使底部边框不贴紧文本 */
+    color: #fff; /* 设置文字颜色为不透明的黑色 */
+    flex: 1; /* 让输入框占据剩余的空间 */
+    max-width: 150px; /* 设置最大宽度，你可以根据需要进行调整 */
+    outline: none; /* 去除点击时的外边框显示 */
+    text-align: center; /* 将输入的字体居中 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,1);
+    font-size: 16px;
+}
+/* 创建伪元素用于模拟用户输入的下划线效果 */
+.input-container input::before {
+    content: attr(placeholder); /* 使用 placeholder 文本作为伪元素的内容 */
+    position: absolute;
+    top: 100%; /* 将伪元素定位在输入框底部 */
+    left: 0;
+    color: #ccc; /* 设置伪元素文字颜色为不透明的黑色 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,1);
+    text-align: center; /* 将输入的字体居中 */
+
+}
+
+.label {
+  	text-shadow: 1px 1px 2px rgba(0,0,0,1);
+	color: #fff;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-align: center;
+	--s: 0.1em;   /* the thickness of the line */
+    --c: hsl(186 100% 69%); /* the color */
+
+  padding-bottom: var(--s);
+  background:
+    linear-gradient(90deg,var(--c) 50%,#000 0) calc(100% - var(--_p,0%))/200% 100%,
+    linear-gradient(var(--c) 0 0) 0% 100%/var(--_p,0%) var(--s) no-repeat;
+  -webkit-background-clip: text,padding-box;
+          background-clip: text,padding-box;
+  transition: 0.5s;
+}

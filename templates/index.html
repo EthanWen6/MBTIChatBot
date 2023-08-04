@@ -1,233 +1,75 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PromptHub - Modern Homepage</title>
-    <link rel="stylesheet" href="./static/styles.css">
-	<script>
-    var chatHistory = JSON.parse('{{ chat_history|tojson|safe }}');
-    </script>
+    <link rel="stylesheet" href="./static/createOwnAi.css">
+    <style>
+    h2{
+    animation: slideUpAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    }
+
+@keyframes slideUpAnimation {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+    </style>
+
 </head>
 
 <body>
-<button class="back ">
-  CLICK HERE
-</button>
-<div class="head">
-<h2 >MBTI Chat Agent </h2>
+<div class="container">
+    <div class="left">
+<div>
+<h2> Create Your Own Digital Twin</h2>
+    <p class="animation a3">"Unleash creativity, connect with others! Welcome to a realm where you create your digital self, socialize, and have fun. Craft a unique avatar, forge friendships, and explore virtual landscapes together. Join now to shape your online identity and enjoy endless social adventures!"</p>
+    <div>
+
+
+    </div>
+    <div class="animation a5" id="tool-len">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<a href="https://twitter.com" class="icon-button twitter"><i class="fab fa-twitter"></i><span></span></a>
+<a href="https://www.facebook.com" class="icon-button facebook"><i class="fab fa-facebook"></i><span></span></a>
+<a href="https://www.linkedin.com/in/ethan-wen" class="icon-button linkedin"><i class="fab fa-linkedin"></i><span></span></a>
+<a href="https://www.instagram.com" class="icon-button instagram"><i class="fab fa-instagram"></i><span></span></a>
+<a href="https://github.com/EthanWen6" class="icon-button github"><i class="fab fa-github"></i><span></span></a>
 </div>
-<div class="chat-container">
-    <ul class="chat" id="chat-list">
-        <!-- 将会话历史记录也展示在前端 -->
-        {% for message in chat_history %}
-            <li class="message {% if message.sender == 'user' %}right{% else %}left{% endif %}">
-                <img class="logo" src="{% if message.sender == 'user' %}./static/user.jpg{% else %}./static/Icon.png{% endif %}" alt="">
-                <p>{{ message.content }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+
 </div>
- <div class="input-container">
-        <input type="text" class="text_input" placeholder="Message...">
-        <button class='glowing-btn'><span class='glowing-txt' id="clear-session-btn">C<span class='faulty-letter'>L</span>EAR</span></button>
+
     </div>
 
-<div class="selectdiv">
-    <label>
-        <select id="personality-select">
-            {% for option in personality_options %}
-                <option value="{{ option }}" {% if option == selected_personality %} selected {% endif %}>
-                    {{ option }}
-                </option>
-            {% endfor %}
-        </select>
-    </label>
+    <div class = "right">
+    </div>
+
+
+
 </div>
-  </label>
-</div>
-</body>
+
+
+
+
 
 <script>
-
-    // 页面加载完成后执行以下 JavaScript 代码
     document.addEventListener("DOMContentLoaded", function() {
+        const h2Element = document.querySelector("h2");
 
-        // 获取页面元素
-        const chatList = document.querySelector(".chat");
-        const textInput = document.querySelector(".text_input");
-        const userAvatar = "./static/user.jpg"; // Sample avatar URL, replace with the user's avatar URL
-
-        // 显示会话历史中的消息
-        chatHistory.forEach(message => {
-            displayMessage(message);
+        h2Element.addEventListener("click", function() {
+            window.location.href = "/createai";
         });
-
-        //每次刷新页面都自动滚动到最新的消息位置
-        scrollBoxFun();
-
-        // 发送消息给后端的函数
-        function sendMessageToServer(message) {
-            fetch('/send_message_to_openai', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 'message': message }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.reply.trim() !== "") { // 如果后端返回的回复不为空（去除首尾空格后判断）
-                    // 将机器人的回复添加到聊天历史中
-                    const botReply = {
-                        sender: 'bot',
-                        content: data.reply
-                    };
-                    displayMessage(botReply);
-
-                    // 自动滚动到最新消息处（平滑滚动）
-                    scrollBoxFun();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        // 显示消息的函数
-        function displayMessage(message) {
-            const newMessage = document.createElement("li");
-            newMessage.className = message.sender === "user" ? "message right" : "message left";
-
-            const avatarImg = document.createElement("img");
-            avatarImg.className = "logo";
-            avatarImg.src = message.sender === "user" ? userAvatar : "./static/Icon.png";
-            avatarImg.alt = message.sender === "user" ? "User Avatar" : "Bot Avatar";
-            newMessage.appendChild(avatarImg);
-
-            const messageContent = document.createElement("p");
-            messageContent.textContent = message.content;
-            newMessage.appendChild(messageContent);
-
-            chatList.appendChild(newMessage);
-        }
-
-        // 滚动到最新消息处的函数
-        function scrollBoxFun() {
-            const chatcontainer = document.querySelector(".chat-container");
-            chatcontainer.scrollTo({
-                top: chatcontainer.scrollHeight,
-                behavior: 'smooth' // 使用平滑滚动
-            });
-        }
-
-textInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        const message = textInput.value.trim();
-
-        if (message !== "") {
-            // 将用户输入的消息添加到聊天历史中
-            const userMessage = {
-                sender: 'user',
-                content: message
-            };
-            displayMessage(userMessage);
-
-            textInput.value = "";
-
-            // 发送用户输入的消息给后端（OpenAI）
-            sendMessageToServer(message);
-
-            //自动滚动到最新消息处
-            scrollBoxFun();
-        }
-    }
-});
-
-const selectElement = document.getElementById("personality-select");
-selectElement.addEventListener('change',function(){
-            // 更新菜单显示为所选
-            updateSelectedOption();
-
-            // 获取用户所选内容
-            var selectElement = document.getElementById("personality-select");
-            var selectedOption = selectElement.value;
-
-
-
-            // 立刻发送用户所选内容到后端
-            sendSelectedOptionToBackend(selectedOption);
-
-});
-
-        // 在用户选择个性后更新菜单显示的函数
-        function updateSelectedOption() {
-            var selectElement = document.getElementById("personality-select");
-            var selectedOption = selectElement.value;
-
-            // 这里是原来的updateSelectedOption()函数的内容
-            // 更新菜单显示为所选
-            // ...
-        }
-
-        // 发送用户所选内容到后端的函数
-        function sendSelectedOptionToBackend(selectedOption) {
-            fetch('/send_selected_option', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    option: selectedOption
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // 发送成功后的处理逻辑，立刻清空session并刷新页面
-                if (data.status === 'success') {
-                    clearSessionOnServer();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-  // 获取清除会话的按钮
-    const clearSessionBtn = document.getElementById("clear-session-btn");
-
-    // 添加按钮点击事件监听器
-    clearSessionBtn.addEventListener("click", function() {
-        // 发送清除会话请求到后端
-        clearSessionOnServer();
-    });
-
-    // 发送清除会话请求的函数
-    function clearSessionOnServer() {
-        fetch('/clear_session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            // 清除成功后，刷新页面
-            if (data.status === 'success') {
-                location.reload();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-
-
-
-
-
-
-
     });
 </script>
+
+</body>
+</html>

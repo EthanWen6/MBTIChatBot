@@ -8,12 +8,12 @@ from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, Me
 from langchain.memory import ConversationBufferMemory
 import json
 
-os.environ["OPENAI_API_KEY"]="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"
+os.environ["OPENAI_API_KEY"]="your api key"
 
 app = Flask(__name__)
 
 # 设置会话密钥
-app.config['SECRET_KEY'] = 'HwqeFewqBFewqEK23932NFfN4321K32M1D02dwGI30439JGasdfRIE'
+app.config['SECRET_KEY'] = 'your api key'
 
 # 配置会话存储方式为简单的基于内存的会话存储
 app.config['SESSION_TYPE'] = 'filesystem'
